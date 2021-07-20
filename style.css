@@ -1,43 +1,46 @@
-html, body {
-    margin: 0;
-    height: 100vh;
+html,
+body {
+	margin: 0;
+	height: 100vh;
 }
 * {
-    font-family: 'Oswald', sans-serif;
+	font-family: 'Oswald', sans-serif;
 }
+
 #popupModal {
-    position: fixed;
-    /* display: flex; */
-    display: none;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 100%;
-    background-color: rgba(12, 18, 27, 0.884);
+	position: fixed;
+	/* display: flex; */
+	display: none;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100%;
+	background-color: rgba(12, 18, 27, 0.884);
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
+
 input {
-    height: 2rem;
-    width: 15rem;
-    text-align: center;
+	height: 2rem;
+	width: 15rem;
+	text-align: center;
 }
 
 input:focus-visible {
-    outline: none;
-
+	outline: none;
 }
+
 button {
-    margin: 1rem;
-    height: 3rem;
-    width: 8rem;
-    background-color: rgb(18, 17, 27);
-    color: white;
-    border: none;
-    border-radius: 2rem;
-    cursor: pointer;
+	margin: 1rem;
+	height: 3rem;
+	width: 8rem;
+	background-color: rgb(18, 17, 27);
+	color: white;
+	border: none;
+	border-radius: 2rem;
+	cursor: pointer;
 }
