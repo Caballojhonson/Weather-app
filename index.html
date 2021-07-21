@@ -1,62 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
-<script src="https://kit.fontawesome.com/f1c710ddbd.js" crossorigin="anonymous"></script>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>Weather app</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div id="popupModal">
+			<form>
+				<input type="text" placeholder="Display weather in..." />
+				<button>Go</button>
+			</form>
+		</div>
 
-    <title>Weather app</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+		<div id="sidebar">
+			<div class="day-box" id="day-box-0">
+				<h6 class="box-day"></h6>
+				<img class="box-icon" />
+			</div>
+			<div class="day-box" id="day-box-1">
+				<h6 class="box-day"></h6>
+				<img class="box-icon" />
+			</div>
+			<div class="day-box" id="day-box-2">
+				<h6 class="box-day"></h6>
+				<img class="box-icon" />
+			</div>
+			<div class="day-box" id="day-box-3">
+				<h6 class="box-day"></h6>
+				<img class="box-icon" />
+			</div>
+			<div class="day-box" id="day-box-4">
+				<h6 class="box-day"></h6>
+				<img class="box-icon" />
+			</div>
+			<div class="day-box" id="day-box-5">
+				<h6 class="box-day"></h6>
+				<img class="box-icon" />
+			</div>
+			<div class="day-box" id="day-box-6">
+				<h6 class="box-day"></h6>
+				<img class="box-icon" />
+			</div>
+			<div class="day-box" id="day-box-7">
+				<h6 class="box-day"></h6>
+				<img class="box-icon" />
+			</div>
+		</div>
 
-    <div id="popupModal">
-        <form>
-            <input type="text" placeholder="Display weather in...">
-            <button>Go</button>
-        </form>
-    </div>
+		<div id="main-container">
+			<div id="location-cont">
+				<div>
+					<img src="img/icons/location.png" alt="location icon" />
+					<h1 id="location"></h1>
+				</div>
+				<div id="day-time">Wednesday, 22/07/2021</div>
+			</div>
+			<img id="weather-icon" alt="Weather icon" />
+			<h1 id="description"></h1>
 
-    <div id="sidebar">
-        <div class="day-box" id="day-box-0">
-            <h6 class="box-day"></h6>
-            <img class="box-icon">
-        </div>
-        <div class="day-box" id="day-box-1">
-            <h6 class="box-day"></h6>
-            <img class="box-icon">
-        </div>
-        <div class="day-box" id="day-box-2">
-            <h6 class="box-day"></h6>
-            <img class="box-icon">
-        </div>
-        <div class="day-box" id="day-box-3">
-            <h6 class="box-day"></h6>
-            <img class="box-icon">
-        </div>
-        <div class="day-box" id="day-box-4">
-            <h6 class="box-day"></h6>
-            <img class="box-icon">
-        </div>
-        <div class="day-box" id="day-box-5">
-            <h6 class="box-day"></h6>
-            <img class="box-icon">
-        </div>
-        <div class="day-box" id="day-box-6">
-            <h6 class="box-day"></h6>
-            <img class="box-icon">
-        </div>
-        <div class="day-box" id="day-box-7">
-            <h6 class="box-day"></h6>
-            <img class="box-icon">
-        </div>
-    </div>
+			<div id="temps-container">
+				<img src="img/icons/temp.png" alt="Thermometer icon" id="therm-icon" />
+				<h1 id="temp"></h1>
+				<h5 id="feels-like"></h5>
+				<div id="min-max-cont">
+					<h3 id="max" class="min-max"></h3>
+					<h3 id="min" class="min-max"></h3>
+				</div>
+			</div>
 
-    <script src="app.js"></script>
-</body>
+			<div id="stats-cont">
+				<div class="param-wrapper">
+					<img src="img/icons/wind.png" alt="icon" class="param-icon" />
+					<h3 id="wind" class="param-text"></h3>
+				</div>
+				<div class="param-wrapper">
+					<img src="img/icons/humidity.png" alt="icon" class="param-icon" />
+					<h3 id="humidity" class="param-text"></h3>
+				</div>
+				<div class="param-wrapper">
+					<img src="img/icons/pressure.png" alt="icon" class="param-icon" />
+					<h3 id="pressure" class="param-text"></h3>
+				</div>
+				<div class="param-wrapper">
+					<img src="img/icons/uvi.png" alt="icon" class="param-icon" />
+					<h3 id="uvi" class="param-text"></h3>
+				</div>
+				<div class="param-wrapper">
+					<img src="img/icons/sunrise.png" alt="icon" class="param-icon" />
+					<h3 id="sunrise" class="param-text"></h3>
+				</div>
+				<div class="param-wrapper">
+					<img src="img/icons/sunset.png" alt="icon" class="param-icon" />
+					<h3 id="sunset" class="param-text"></h3>
+				</div>
+			</div>
+		</div>
+
+		<script src="app.js"></script>
+	</body>
 </html>
-
