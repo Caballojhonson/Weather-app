@@ -10,7 +10,10 @@ async function getWeather(lat, lon, place) {
 		.then((response) => response.json())
 		.then((parsed) => {
 			weather = processWeather(parsed, place);
+		})
+		.then(() => {
 			console.log(weather);
+			populateBoxes();
 		});
 }
 async function getCoords(cityName) {
@@ -24,6 +27,7 @@ async function getCoords(cityName) {
 	const lon = response[0].lon;
 	const place = `${response[0].name}, ${response[0].country}`;
 	getWeather(lat, lon, place);
+	// renderDOM()
 	console.log(response);
 }
 
@@ -32,24 +36,23 @@ function processWeather(object, place) {
 	const forecast = object.daily;
 	const current = object.current;
 	const processedAlerts = [];
-	const processedForecast = [
-		{
-			day: formatTimestamp(current.dt, 'wd'),
-			date: formatTimestamp(current.dt, 'd'),
-			weather: capitalize(current.weather[0].description),
-			icon: current.weather[0].icon,
-			clouds: current.clouds + '%',
-			temp: Math.round(current.temp) + `${unit}`,
-			feelsLike: Math.round(current.feels_like) + `${unit}`,
-			humidity: current.humidity + '%',
-			windDeg: `${current.wind_deg}º, ${formatWind(current.wind_deg)}`,
-			windSpeed: `${current.wind_speed} m/s`,
-			pressure: current.pressure + ' mbar',
-			uvi: current.uvi,
-			sunrise: formatTimestamp(current.sunrise, 't'),
-			sunset: formatTimestamp(current.sunset, 't'),
-		},
-	];
+	const processedForecast = [];
+	const processedCurrent = {
+		day: formatTimestamp(current.dt, 'wd'),
+		date: formatTimestamp(current.dt, 'd'),
+		weather: capitalize(current.weather[0].description),
+		icon: current.weather[0].icon,
+		clouds: current.clouds + '%',
+		temp: Math.round(current.temp) + `${unit}`,
+		feelsLike: Math.round(current.feels_like) + `${unit}`,
+		humidity: current.humidity + '%',
+		windDeg: `${current.wind_deg}º, ${formatWind(current.wind_deg)}`,
+		windSpeed: `${current.wind_speed} m/s`,
+		pressure: current.pressure + ' mbar',
+		uvi: current.uvi,
+		sunrise: formatTimestamp(current.sunrise, 't'),
+		sunset: formatTimestamp(current.sunset, 't'),
+	};
 
 	for (let i = 0; i < alerts.length; i++) {
 		const alert = alerts[i];
@@ -85,6 +88,7 @@ function processWeather(object, place) {
 	return {
 		place: place,
 		alerts: processedAlerts,
+		current: processedCurrent,
 		weather: processedForecast,
 	};
 }
@@ -134,8 +138,36 @@ function formatWind(deg) {
 	else 'Invalid degree number';
 }
 
-function capitalize(string){
-   return string.charAt(0).toUpperCase() + string.slice(1);
+function capitalize(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function getForecastDays() {
+	let days = [];
+
+	weather.weather.forEach((day) => {
+		const trimmed = day.day.substring(0, 3);
+		days.push(trimmed);
+	});
+
+	days[0] = 'Today';
+
+	return days;
+}
+
+// ---------------------------- DOM ---------------------------------
+
+function populateBoxes() {
+	const cells = document.querySelectorAll('.day-box');
+	const days = getForecastDays();
+
+	cells.forEach((cell, i) => {
+		const text = cell.firstElementChild;
+		const icon = cell.lastElementChild;
+
+		text.textContent = days[i];
+		icon.src = `http://openweathermap.org/img/wn/${weather.weather[i].icon}@4x.png`;
+	});
 }
 
 getCoords('madrid');
