@@ -14,10 +14,12 @@
 		<link rel="stylesheet" href="style.css" />
 	</head>
 	<body>
+
 		<div id="popupModal">
 			<form>
-				<input type="text" placeholder="Display weather in..." />
-				<button>Go</button>
+				<input id="city-input" type="text" placeholder="Display weather in..." />
+				<button type="button" id="search-btn">Go</button>
+                <button type="button" id="back-btn">Back</button>
 			</form>
 		</div>
 
@@ -57,6 +59,9 @@
 		</div>
 
 		<div id="main-container">
+
+            <img id="search" src="img/icons/search.png" alt="Search">
+
 			<div id="location-cont">
 				<div>
 					<img src="img/icons/location.png" alt="location icon" />

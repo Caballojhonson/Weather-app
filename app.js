@@ -166,7 +166,7 @@ function renderDOM(index) {
 	populateWeatherIcon(index);
 	populateDescription(index);
 	populateTemps(index);
-	populateParams(index)
+	populateParams(index);
 }
 
 function populateBoxes() {
@@ -236,4 +236,40 @@ function populateParams(index) {
 	sunset.textContent = obj.sunset;
 }
 
-getCoords('moscow');
+function handleSearch() {
+	const searchIcon = document.getElementById('search')
+	const searchForm = document.getElementById('popupModal')
+	const input = document.getElementById('city-input')
+	const searchBtn = document.getElementById('search-btn')
+	const backBtn = document.getElementById('back-btn')
+
+	searchIcon.addEventListener('click', () => {
+		searchForm.style.display = 'flex'
+	})
+
+	searchBtn.addEventListener('click', () => {
+		console.log(input.value);
+		getCoords(input.value);
+		searchForm.style.display = 'none'
+
+	})
+
+	backBtn.addEventListener('click', () => {
+		searchForm.style.display = 'none'
+	})
+}
+
+function handleForecastBtns() {
+	const btns = document.querySelectorAll('.day-box')
+
+	btns.forEach((btn) => {
+		const btnIndex = parseInt(btn.id.slice(-1)) 
+		btn.addEventListener('click', () => {
+			renderDOM(btnIndex + 1);
+		})
+	})
+}
+
+handleSearch();
+handleForecastBtns();
+
