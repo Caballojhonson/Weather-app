@@ -12,7 +12,6 @@ async function getWeather(lat, lon, place) {
 			.then((parsed) => {
 				weather = processWeather(parsed, place);
 				console.log(parsed);
-
 			})
 			.then(() => {
 				renderDOM(0);
@@ -336,6 +335,7 @@ function handleSearch() {
 	const searchBtn = document.getElementById('search-btn');
 	const backBtn = document.getElementById('back-btn');
 	const loadScreen = document.getElementById('load-screen');
+	const form = document.getElementById('search-form');
 
 	btn.addEventListener('click', () => {
 		searchForm.style.display = 'flex';
@@ -351,6 +351,14 @@ function handleSearch() {
 	backBtn.addEventListener('click', () => {
 		searchForm.style.display = 'none';
 	});
+
+	form.addEventListener('submit', (e) => {
+		getCoords(input.value);
+		searchForm.style.display = 'none';
+		input.value = '';
+		loadScreen.style.display = 'flex';
+		e.preventDefault();
+	}, false);
 }
 
 function handleForecastBtns() {
@@ -373,6 +381,13 @@ function handleErrorScreen() {
 		getCoords(retryInput.value);
 		errorScreen.style.display = 'none';
 	});
+
+	retryInput.addEventListener('keyup', (e) => {
+		if(e.code == 'Enter') {
+			getCoords(retryInput.value);
+		errorScreen.style.display = 'none';
+		}
+	})
 }
 
 handleSearch();
