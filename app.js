@@ -172,6 +172,7 @@ function getForecastDays() {
 function renderDOM(index) {
 	populateSidebar();
 	populateLocation();
+	populateAlerts();
 	populateDateTime(index);
 	populateWeatherIcon(index);
 	populateDescription(index);
@@ -247,6 +248,29 @@ function populateParams(index) {
 	sunset.textContent = obj.sunset;
 }
 
+function populateAlerts() {
+	const container = document.getElementById('alerts');
+	let formattedAlerts = [];
+
+	if (weather.alerts) {
+	const alerts = weather.alerts;
+
+	alerts.forEach((alert) => {
+		formattedAlerts.push(`
+			Alert from ${alert.agency}: 
+			${alert.warning} - 
+			${alert.description}
+			From ${alert.start}
+			until ${alert.end}. 
+			`
+		)
+	});
+
+	container.textContent = formattedAlerts.join(' ');
+	container.style.animationDuration = `${container.textContent.length / 10}s`
+	}
+}
+
 function setBackground(index) {
 	const container = document.getElementById('background')
 	const weatherCode = weather.weather[index].id;
@@ -283,7 +307,7 @@ function handleSearch() {
 		console.log(input.value);
 		getCoords(input.value);
 		searchForm.style.display = 'none'
-
+		input.value = '';
 	})
 
 	backBtn.addEventListener('click', () => {
