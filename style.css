@@ -256,6 +256,8 @@ input {
 	width: 15rem;
 	text-align: center;
 	margin-top: 3rem;
+	font-size: 1.2rem;
+	font-weight: 300;
 }
 
 input:focus-visible {
@@ -277,7 +279,7 @@ button {
 	flex-direction: row;
 }
 #search-btn {
-	background-color: rgb(23, 38, 39);
+	background-color: rgb(15, 23, 24);
 }
 
 @media screen and (min-width: 575px) {
@@ -375,3 +377,4 @@ button {
 	  box-shadow: 0 -18px 0 0 whitesmoke, 12.72984px -12.72984px 0 0 whitesmoke, 18px 0 0 -5px rgba(152, 128, 255, 0), 12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), 0 18px 0 -5px rgba(152, 128, 255, 0), -12.72984px 12.72984px 0 -5px rgba(152, 128, 255, 0), -18px 0 0 -5px rgba(152, 128, 255, 0), -12.72984px -12.72984px 0 0 whitesmoke;
 	}
   }
+
