@@ -165,8 +165,6 @@ function getForecastDays() {
 	return days;
 }
 
-
-
 // ---------------------------- DOM ---------------------------------
 
 function renderDOM(index) {
@@ -178,7 +176,7 @@ function renderDOM(index) {
 	populateDescription(index);
 	populateTemps(index);
 	populateParams(index);
-	setBackground(index)
+	setBackground(index);
 }
 
 function populateSidebar() {
@@ -240,7 +238,7 @@ function populateParams(index) {
 	const sunrise = document.getElementById('sunrise');
 	const sunset = document.getElementById('sunset');
 
-	wind.textContent = `${obj.windSpeed} ${obj.windDeg}`
+	wind.textContent = `${obj.windSpeed} ${obj.windDeg}`;
 	humidity.textContent = obj.humidity;
 	pressure.textContent = obj.pressure;
 	uvi.textContent = obj.uvi;
@@ -249,30 +247,50 @@ function populateParams(index) {
 }
 
 function populateAlerts() {
-	const container = document.getElementById('alerts');
+	const container = document.getElementById('alert-container');
+	const textContainer = document.getElementById('alerts');
+	const styleSheet = document.getElementById('dynamic-style').sheet;
 	let formattedAlerts = [];
 
-	if (weather.alerts) {
-	const alerts = weather.alerts;
+	if (styleSheet.rules.length > 0) {
+		styleSheet.deleteRule(0);
+	}
 
-	alerts.forEach((alert) => {
-		formattedAlerts.push(`
+	if (weather.alerts.length > 0) {
+		const alerts = weather.alerts;
+		container.style.display = 'flex';
+
+		alerts.forEach((alert) => {
+			formattedAlerts.push(`
 			Alert from ${alert.agency}: 
 			${alert.warning} - 
 			${alert.description}
 			From ${alert.start}
 			until ${alert.end}. 
-			`
-		)
-	});
+			`);
+		});
 
-	container.textContent = formattedAlerts.join(' ');
-	container.style.animationDuration = `${container.textContent.length / 10}s`
+		textContainer.textContent = formattedAlerts.join(' ');
+		const alertLength = textContainer.textContent.length;
+		const alertWidth = textContainer.offsetWidth;
+		textContainer.style.animationDuration = `${alertLength / 9}s`;
+		styleSheet.insertRule(`
+	@keyframes alert {
+		from {
+			transform: translateX(${alertWidth / 2 + window.innerWidth / 2}px)
+		}
+		to {
+			transform: translateX(-${alertWidth / 2 + window.innerWidth / 2}px)
+		}
+	}
+	`);
+	} else {
+		container.style.display = 'none';
 	}
 }
 
 function setBackground(index) {
-	const container = document.getElementById('background')
+	const container = document.getElementById('background');
 	const weatherCode = weather.weather[index].id;
 	const firstDigit = weatherCode.toString().charAt(0);
 	let url = '';
@@ -282,50 +300,50 @@ function setBackground(index) {
 	else if (firstDigit == 5) url = 'img/backgrounds/rain.jpg';
 	else if (firstDigit == 6) url = 'img/backgrounds/snow.jpg';
 	else if (firstDigit == 7) url = 'img/backgrounds/fog.jpg';
-	else if (firstDigit == 8 && weatherCode != 800) url = 'img/backgrounds/clouds.jpg';
-	else url = 'img/backgrounds/clear.jpg'
+	else if (firstDigit == 8 && weatherCode != 800)
+		url = 'img/backgrounds/clouds.jpg';
+	else url = 'img/backgrounds/clear.jpg';
 
-	container.style.backgroundImage = `url(${url})`
+	container.style.backgroundImage = `url(${url})`;
 }
 
 // -------------------- HANDLERS ----------------------
 
-
-
 function handleSearch() {
-	const searchIcon = document.getElementById('search')
-	const searchForm = document.getElementById('popupModal')
-	const input = document.getElementById('city-input')
-	const searchBtn = document.getElementById('search-btn')
-	const backBtn = document.getElementById('back-btn')
+	const searchIcon = document.getElementById('search');
+	const searchForm = document.getElementById('popupModal');
+	const input = document.getElementById('city-input');
+	const searchBtn = document.getElementById('search-btn');
+	const backBtn = document.getElementById('back-btn');
 
 	searchIcon.addEventListener('click', () => {
-		searchForm.style.display = 'flex'
-	})
+		searchForm.style.display = 'flex';
+	});
 
 	searchBtn.addEventListener('click', () => {
 		console.log(input.value);
 		getCoords(input.value);
-		searchForm.style.display = 'none'
+		searchForm.style.display = 'none';
 		input.value = '';
-	})
+	});
 
 	backBtn.addEventListener('click', () => {
-		searchForm.style.display = 'none'
-	})
+		searchForm.style.display = 'none';
+	});
 }
 
 function handleForecastBtns() {
-	const btns = document.querySelectorAll('.day-box')
+	const btns = document.querySelectorAll('.day-box');
 
 	btns.forEach((btn) => {
-		const btnIndex = parseInt(btn.id.slice(-1)) 
+		const btnIndex = parseInt(btn.id.slice(-1));
 		btn.addEventListener('click', () => {
 			renderDOM(btnIndex + 1);
-		})
-	})
+		});
+	});
 }
 
 handleSearch();
 handleForecastBtns();
 
+console.log(window.innerWidth);
