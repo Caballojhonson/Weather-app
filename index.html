@@ -15,13 +15,37 @@
 		<style id="dynamic-style" type="text/css"></style>
 	</head>
 	<body>
+		<div id="preload-backgrounds">
+			<img src="img/backgrounds/clear.jpg" />
+			<img src="img/backgrounds/clouds.jpg" />
+			<img src="img/backgrounds/drizzle.jpg" />
+			<img src="img/backgrounds/fog.jpg" />
+			<img src="img/backgrounds/rain.jpg" />
+			<img src="img/backgrounds/snow.jpg" />
+			<img src="img/backgrounds/storm.jpg" />
+		</div>
+
+		<div id="load-screen">
+			<h1 id="load-msg">Calling home, just a sec</h1>
+			<div id="loader" class="dot-spin"></div>
+		</div>
+
 		<div id="background" alt="background image representing weather"></div>
+
+		<div id="error-screen">
+			<h1 id="error-header">Couldn't find that city... Retry?</h1>
+			<input id="retry-input" type="text" placeholder="City name" />
+			<button type="button" id="retry-btn">Retry</button>
+		</div>
 
 		<div id="popupModal">
 			<form>
-				<input id="city-input" type="text" placeholder="Display weather in..." />
-				<button type="button" id="search-btn">Go</button>
-                <button type="button" id="back-btn">Back</button>
+				<h1>Look up weather in...</h1>
+				<input id="city-input" type="text" placeholder="City name" />
+				<div id="btn-wrapper">
+					<button type="button" id="back-btn">Back</button>
+					<button type="button" id="search-btn">Go</button>
+				</div>
 			</form>
 		</div>
 
@@ -61,9 +85,6 @@
 		</div>
 
 		<div id="main-container">
-
-            <img id="search" src="img/icons/search.png" alt="Search">
-
 			<div id="location-cont">
 				<div>
 					<img src="img/icons/location.png" alt="location icon" />
@@ -114,7 +135,6 @@
 			<div id="alert-container">
 				<p id="alerts"></p>
 			</div>
-
 		</div>
 
 		<script src="app.js"></script>

@@ -3,32 +3,42 @@ let weather = 'No data received';
 let unit = 'ºC';
 
 async function getWeather(lat, lon, place) {
-	fetch(
-		`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&cnt=7&appid=${key}&units=Metric`,
-		{ mode: 'cors' }
-	)
-		.then((response) => response.json())
-		.then((parsed) => {
-			weather = processWeather(parsed, place);
-			console.log(parsed);
-		})
-		.then(() => {
-			console.log(weather);
-			renderDOM(0);
-		});
+	try {
+		fetch(
+			`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&cnt=7&appid=${key}&units=Metric`,
+			{ mode: 'cors' }
+		)
+			.then((response) => response.json())
+			.then((parsed) => {
+				weather = processWeather(parsed, place);
+			})
+			.then(() => {
+				renderDOM(0);
+				setTimeout(
+					() => (document.getElementById('load-screen').style.display = 'none'),
+					1000
+				);
+			});
+	} catch (error) {
+		console.log(error);
+	}
 }
 async function getCoords(cityName) {
-	const request = fetch(
-		`https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${key}`,
-		{ mode: 'cors' }
-	);
+	try {
+		const request = fetch(
+			`https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${key}`,
+			{ mode: 'cors' }
+		);
 
-	const response = await (await request).json();
-	const lat = response[0].lat;
-	const lon = response[0].lon;
-	const place = `${response[0].name}, ${response[0].country}`;
-	getWeather(lat, lon, place);
-	console.log(response);
+		const response = await (await request).json();
+		const lat = response[0].lat;
+		const lon = response[0].lon;
+		const place = `${response[0].name}, ${response[0].country}`;
+		getWeather(lat, lon, place);
+	} catch (error) {
+		document.getElementById('error-screen').style.display = 'flex';
+		console.log(error);
+	}
 }
 
 // ------------------ POST-PROCESSING -------------------
@@ -310,21 +320,22 @@ function setBackground(index) {
 // -------------------- HANDLERS ----------------------
 
 function handleSearch() {
-	const searchIcon = document.getElementById('search');
+	const btn = document.getElementById('location-cont');
 	const searchForm = document.getElementById('popupModal');
 	const input = document.getElementById('city-input');
 	const searchBtn = document.getElementById('search-btn');
 	const backBtn = document.getElementById('back-btn');
+	const loadScreen = document.getElementById('load-screen');
 
-	searchIcon.addEventListener('click', () => {
+	btn.addEventListener('click', () => {
 		searchForm.style.display = 'flex';
 	});
 
 	searchBtn.addEventListener('click', () => {
-		console.log(input.value);
 		getCoords(input.value);
 		searchForm.style.display = 'none';
 		input.value = '';
+		loadScreen.style.display = 'flex';
 	});
 
 	backBtn.addEventListener('click', () => {
@@ -343,7 +354,17 @@ function handleForecastBtns() {
 	});
 }
 
+function handleErrorScreen() {
+	const errorScreen = document.getElementById('error-screen');
+	const retryBtn = document.getElementById('retry-btn');
+	const retryInput = document.getElementById('retry-input');
+
+	retryBtn.addEventListener('click', () => {
+		getCoords(retryInput.value);
+		errorScreen.style.display = 'none';
+	});
+}
+
 handleSearch();
 handleForecastBtns();
-
-console.log(window.innerWidth);
+handleErrorScreen();
