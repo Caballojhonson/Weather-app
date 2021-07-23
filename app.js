@@ -1,4 +1,4 @@
-const key = '8552967c1e78f7a3f945ef7cbd1121e0';
+const key = '8552967c1e78f7a3f945ef7cbd1121e0'; //Please get your own, it's completely free...
 let weather = 'No data received';
 let unit = 'ºC';
 
@@ -14,7 +14,7 @@ async function getWeather(lat, lon, place) {
 		})
 		.then(() => {
 			console.log(weather);
-			renderDOM(1);
+			renderDOM(0);
 		});
 }
 async function getCoords(cityName) {
@@ -31,6 +31,8 @@ async function getCoords(cityName) {
 	console.log(response);
 }
 
+// ------------------ POST-PROCESSING -------------------
+
 function processWeather(object, place) {
 	const alerts = object.alerts;
 	const forecast = object.daily;
@@ -38,10 +40,11 @@ function processWeather(object, place) {
 	const processedAlerts = [];
 	const processedForecast = [];
 	processedForecast.push({
-		day: formatTimestamp(current.dt, 'wd'),
-		date: formatTimestamp(current.dt, 'd'),
+		day: 'Current weather',
+		date: '',
 		weather: capitalize(current.weather[0].description),
 		icon: current.weather[0].icon,
+		id: current.weather[0].id,
 		clouds: current.clouds + '%',
 		temp: Math.round(current.temp) + `${unit}`,
 		feelsLike: Math.round(current.feels_like) + `${unit}`,
@@ -73,6 +76,7 @@ function processWeather(object, place) {
 			date: formatTimestamp(day.dt, 'd'),
 			weather: capitalize(day.weather[0].description),
 			icon: day.weather[0].icon,
+			id: day.weather[0].id,
 			clouds: day.clouds + '%',
 			minTemp: Math.round(day.temp.min) + `${unit}`,
 			maxTemp: Math.round(day.temp.max) + `${unit}`,
@@ -90,7 +94,6 @@ function processWeather(object, place) {
 	return {
 		place: place,
 		alerts: processedAlerts,
-		//		current: processedCurrent,
 		weather: processedForecast,
 	};
 }
@@ -147,29 +150,37 @@ function capitalize(string) {
 function getForecastDays() {
 	let days = [];
 
-	weather.weather.forEach((day) => {
+	weather.weather.forEach((day, i) => {
 		const trimmed = day.day.substring(0, 3);
 		days.push(trimmed);
 	});
+	// for (let i = 1; i < weather.weather.length; i++) {
+	// 	const day = weather.weather[i];
+	// 	const trimmed = day.day.substring(0, 3);
+	// 	days.push(trimmed);
+	// }
 
-	days[0] = 'Today';
+	days[1] = 'Today';
 
 	return days;
 }
 
+
+
 // ---------------------------- DOM ---------------------------------
 
 function renderDOM(index) {
-	populateBoxes();
+	populateSidebar();
 	populateLocation();
 	populateDateTime(index);
 	populateWeatherIcon(index);
 	populateDescription(index);
 	populateTemps(index);
 	populateParams(index);
+	setBackground(index)
 }
 
-function populateBoxes() {
+function populateSidebar() {
 	const cells = document.querySelectorAll('.day-box');
 	const days = getForecastDays();
 
@@ -193,7 +204,7 @@ function populateLocation() {
 
 function populateDateTime(index) {
 	const container = document.getElementById('day-time');
-	container.textContent = `${weather.weather[index].day}, ${weather.weather[index].date}`;
+	container.textContent = `${weather.weather[index].day}  ${weather.weather[index].date}`;
 }
 
 function populateWeatherIcon(index) {
@@ -235,6 +246,27 @@ function populateParams(index) {
 	sunrise.textContent = obj.sunrise;
 	sunset.textContent = obj.sunset;
 }
+
+function setBackground(index) {
+	const container = document.getElementById('background')
+	const weatherCode = weather.weather[index].id;
+	const firstDigit = weatherCode.toString().charAt(0);
+	let url = '';
+
+	if (firstDigit == 2) url = 'img/backgrounds/storm.jpg';
+	else if (firstDigit == 3) url = 'img/backgrounds/drizzle.jpg';
+	else if (firstDigit == 5) url = 'img/backgrounds/rain.jpg';
+	else if (firstDigit == 6) url = 'img/backgrounds/snow.jpg';
+	else if (firstDigit == 7) url = 'img/backgrounds/fog.jpg';
+	else if (firstDigit == 8 && weatherCode != 800) url = 'img/backgrounds/clouds.jpg';
+	else url = 'img/backgrounds/clear.jpg'
+
+	container.style.backgroundImage = `url(${url})`
+}
+
+// -------------------- HANDLERS ----------------------
+
+
 
 function handleSearch() {
 	const searchIcon = document.getElementById('search')

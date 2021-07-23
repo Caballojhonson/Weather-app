@@ -27,15 +27,17 @@ body {
 	width: 100%;
 	margin: 0px;
 }
-body::before {
-	content: '';
+#background {
+	height: 100vh;
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-image: url('img/backgrounds/courtney-cook-HClKQKUodF4-unsplash.jpg');
 	opacity: 0.2;
+	background-image: url('img/backgrounds/clear.jpg');
+	background-position-x: center;
+	background-position-y: center;
 }
 
 /* SIDEBAR */
@@ -126,6 +128,7 @@ body::before {
 	width: 20rem;
 	height: 20rem;
 	margin: -3rem 0rem -3.5rem 0rem;
+	z-index: 5;
 }
 
 #temps-container {
@@ -227,7 +230,7 @@ button {
 		font-size: 22px;
 	}
 
-	body::before {
+	#background {
 		background-size: cover;
 	}
 }
